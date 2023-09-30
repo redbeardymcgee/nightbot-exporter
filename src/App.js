@@ -10,7 +10,6 @@ import { NightbotExportSelector } from "./NightbotExportSelector"
 
 export default function App() {
   const [accessToken, setAccessToken] = useState(null)
-
   const params = new URLSearchParams(window.location.hash.replace("#", ""))
 
   useEffect(() => {
@@ -20,16 +19,17 @@ export default function App() {
   }, [params])
 
   const [endpoints, setEndpointsState] = useState({
-    user: { checked: false, path: "" },
-    channel: { checked: false, path: "" },
-    custom_commands: { checked: true, path: "" },
-    default_commands: { checked: false, path: "" },
-    regulars: { checked: true, path: "" },
-    playlist: { checked: false, path: "" },
-    song_queue: { checked: false, path: "" },
-    spam_filters: { checked: true, path: "" },
-    subscribers: { checked: false, path: "" },
-    timers: { checked: true, path: "" },
+    user: { checked: false, path: "/me" },
+    channel: { checked: false, path: "/channel" },
+    custom_commands: { checked: true, path: "/commands" },
+    default_commands: { checked: false, path: "/commands/default" },
+    regulars: { checked: true, path: "/regulars" },
+    playlist: { checked: false, path: "/song_requests/playlist" },
+    song_request_settings: { checked: false, path: "/song_requests" },
+    song_queue: { checked: false, path: "/song_requests/queue" },
+    spam_filters: { checked: false, path: "/spam_protection" },
+    subscribers: { checked: false, path: "/subscribers" },
+    timers: { checked: true, path: "/timers" },
   })
 
   const handleChange = (event) => {

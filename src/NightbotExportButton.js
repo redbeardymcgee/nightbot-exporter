@@ -1,19 +1,44 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
+async function paginate(acc, params) {
+  const page = await fetch(
+    `https://api.nightbot.tv/1${path}?${params.toString()}`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  )
+  const payload = await page.json()
+  const arr = acc.push(payload.data)
+
+  if (arr.length >= payload.data._total) return arr
+
+  return await paginate(
+    arr,
+    new URLSearchParams({ ...params, offset: params.offset + params.limit })
+  )
+}
+
 export function NightbotExportButton({ accessToken, endpoints }) {
-  const urls = Object.values(endpoints).filter((value) => value.checked)
-  console.log(urls)
-  const url = new URL(`https://api.nightbot.tv/1/${endpoints}`)
   const handleExport = async () => {
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    const payload = await res.json()
-    console.log(payload)
-    return payload
+    Object.values(endpoints)
+      .filter((endpoint) => endpoint.checked)
+      .map(async (p) => {
+        const path = p.path.replace(/^\//, "")
+
+        if (p === "playlist" || p === "subscribers") {
+          return await paginate(
+            [],
+            new URLSearchParams({
+              limit: 100,
+              offset: 0,
+            })
+          )
+        }
+
+        const res = await fetch(new URL(`https://api.nightbot.tv/1/${path}`), {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        return await res.json()
+      })
   }
 
   return (
