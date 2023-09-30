@@ -18,6 +18,13 @@ export default function App() {
     }
   }, [params])
 
+  const handleChange = (event) => {
+    setEndpointsState({
+      ...endpoints,
+      [event.target.name]: event.target.checked,
+    })
+  }
+
   const [endpoints, setEndpointsState] = useState({
     user: { checked: false, path: "/me" },
     channel: { checked: false, path: "/channel" },
@@ -31,13 +38,6 @@ export default function App() {
     subscribers: { checked: false, path: "/subscribers" },
     timers: { checked: true, path: "/timers" },
   })
-
-  const handleChange = (event) => {
-    setEndpointsState({
-      ...endpoints,
-      [event.target.name]: event.target.checked,
-    })
-  }
 
   return (
     <Container maxWidth="sm">
