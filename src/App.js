@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 // import Link from "@mui/material/Link"
 import { NightbotAuthButton } from "./components/NightbotAuthButton"
-import { NightbotExportButton } from "./NightbotExportButton"
+import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
 
 export default function App() {
