@@ -1,7 +1,7 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-async function paginate(acc, params) {
+async function paginate(acc, params, accessToken) {
   const page = await fetch(
     `https://api.nightbot.tv/1${path}?${params.toString()}`,
     { headers: { Authorization: `Bearer ${accessToken}` } }
@@ -30,14 +30,16 @@ export function NightbotExportButton({ accessToken, endpoints }) {
             new URLSearchParams({
               limit: 100,
               offset: 0,
-            })
+            }),
+            accessToken
           )
         }
 
-        const res = await fetch(new URL(`https://api.nightbot.tv/1/${path}`), {
+        const res = await fetch(`https://api.nightbot.tv/1/${path}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
-        return await res.json()
+        const foo = await res.json()
+        return foo.data
       })
   }
 
