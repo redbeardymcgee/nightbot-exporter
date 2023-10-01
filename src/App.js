@@ -4,9 +4,9 @@ import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 // import Link from "@mui/material/Link"
-import { NightbotAuthButton } from "./NightbotAuthButton"
+import { NightbotAuthButton } from "./components/NightbotAuthButton"
 import { NightbotExportButton } from "./NightbotExportButton"
-import { NightbotExportSelector } from "./NightbotExportSelector"
+import { NightbotExportSelector } from "./components/NightbotExportSelector"
 
 export default function App() {
   const [accessToken, setAccessToken] = useState(null)
