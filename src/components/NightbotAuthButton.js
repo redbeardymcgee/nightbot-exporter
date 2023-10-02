@@ -21,12 +21,10 @@ export function NightbotAuthButton() {
     scope,
     state: "FIXME",
   })
-  const url = new URL(
-    `https://api.nightbot.tv/oauth2/authorize?${params.toString()}`
-  )
+  const url = `https://api.nightbot.tv/oauth2/authorize?${params.toString()}`
 
   return (
-    <Button variant="contained" href={`${url.toString()}`}>
+    <Button variant="contained" href={url}>
       Authorize
     </Button>
   )
