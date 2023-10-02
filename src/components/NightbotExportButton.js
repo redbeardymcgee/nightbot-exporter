@@ -1,7 +1,21 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-async function paginate(acc, params, accessToken) {
+const paths = {
+  user: "/me",
+  channel: "/channel",
+  custom_commands: "/commands",
+  default_commands: "/commands/default",
+  regulars: "/regulars",
+  playlist: "/song_requests/playlist",
+  song_request_settings: "/song_requests",
+  song_queue: "/song_requests/queue",
+  spam_filters: "/spam_protection",
+  subscribers: "/subscribers",
+  timers: "/timers",
+}
+
+async function paginate(acc, path, params, accessToken) {
   const page = await fetch(
     `https://api.nightbot.tv/1${path}?${params.toString()}`,
     { headers: { Authorization: `Bearer ${accessToken}` } }
@@ -13,33 +27,22 @@ async function paginate(acc, params, accessToken) {
 
   return await paginate(
     arr,
+    path,
     new URLSearchParams({ ...params, offset: params.offset + params.limit })
   )
 }
 
 export function NightbotExportButton({ accessToken, endpoints }) {
-  const paths = {
-    user: "/me",
-    channel: "/channel",
-    custom_commands: "/commands",
-    default_commands: "/commands/default",
-    regulars: "/regulars",
-    playlist: "/song_requests/playlist",
-    song_request_settings: "/song_requests",
-    song_queue: "/song_requests/queue",
-    spam_filters: "/spam_protection",
-    subscribers: "/subscribers",
-    timers: "/timers",
-  }
   const handleExport = async () => {
     Object.entries(endpoints)
       .filter((endpoint) => endpoint[1])
       .map(async (endpoint) => {
         const path = paths[endpoint[0]]
 
-        if (endpoint === "playlist" || endpoint === "subscribers") {
+        if (path === "playlist" || path === "subscribers") {
           return await paginate(
             [],
+            path,
             new URLSearchParams({
               limit: 100,
               offset: 0,
@@ -51,8 +54,7 @@ export function NightbotExportButton({ accessToken, endpoints }) {
         const res = await fetch(`https://api.nightbot.tv/1/${path}`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         })
-        const foo = await res.json()
-        return foo.data
+        return await res.json()
       })
   }
 
