@@ -1,7 +1,7 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-const PATHS = {
+const RESOURCES = {
   user: { paged: false, name: "user", path: "me" },
   channel: { paged: false, name: "channel", path: "channel" },
   custom_commands: { paged: false, name: "commands", path: "commands" },
@@ -28,6 +28,7 @@ const PATHS = {
 }
 
 const fetchPage = async (url, token) => {
+  console.log(url)
   const page = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -36,9 +37,11 @@ const fetchPage = async (url, token) => {
   return await page.json()
 }
 
-async function paginate(acc, url, token, params) {
+async function paginate(acc, url, token) {
+  console.log("in paginate")
   const page = await fetchPage(url, token)
-  const arr = acc.concat(page[resource.name])
+  const key = url.pathname.replace(/^\/1\//, "")
+  const arr = acc.concat(page[key])
 
   if (arr.length >= page._total) {
     console.log(arr)
@@ -50,14 +53,12 @@ async function paginate(acc, url, token, params) {
   // this workaround guarantees that my offset is a number, not "0100100100..."
   const limit = params.get("limit")
   const offset = parseInt(params.get("offset")) + parseInt(limit)
+  const newParams = new URLSearchParams({ limit, offset })
+
   return await paginate(
     arr,
-    resource,
-    token,
-    new URLSearchParams({
-      limit,
-      offset,
-    })
+    new URL(`${url.origin}/${url.pathname}?${newParams.toString()}`),
+    token
   )
 }
 
@@ -66,23 +67,25 @@ export function NightbotExportButton({ accessToken, endpoints }) {
     Object.entries(endpoints)
       .filter((endpoint) => endpoint[1])
       .map(async ([key, value]) => {
-        const url = `https://api.nightbot.tv/1/${PATHS[key].path}`
+        console.log(key)
+        console.log(value)
+        const url = `https://api.nightbot.tv/1/${RESOURCES[key].path}`
+        console.log(url)
 
-        if (!value.paged) {
+        if (!value) {
           const payload = await fetchPage(url, accessToken)
           console.log(payload)
           return payload
         }
 
-        return await paginate(
-          [],
-          url,
-          accessToken,
-          new URLSearchParams({
-            limit: 100,
-            offset: 0,
-          })
-        )
+        const params = new URLSearchParams({
+          limit: 100,
+          offset: 0,
+        })
+        const pagedUrl = new URL(`${url}?${params.toString()}`)
+        const payload = await paginate([], pagedUrl, accessToken)
+
+        return payload
       })
   }
 
