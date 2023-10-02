@@ -3,10 +3,14 @@ import Button from "@mui/material/Button"
 
 export function NightbotAuthButton() {
   const scope = [
+    "channel",
     "commands",
     "commands_default",
     "regulars",
+    "song_requests",
+    "song_requests_queue",
     "song_requests_playlist",
+    "spam_protection",
     "subscribers",
     "timers",
   ].join(" ")
