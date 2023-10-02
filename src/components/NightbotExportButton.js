@@ -28,7 +28,6 @@ const RESOURCES = {
 }
 
 const fetchPage = async (url, token) => {
-  console.log(url)
   const page = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -38,7 +37,6 @@ const fetchPage = async (url, token) => {
 }
 
 async function paginate(acc, url, token) {
-  console.log("in paginate")
   const page = await fetchPage(url, token)
   const key = url.pathname.replace(/^\/1\//, "")
   const arr = acc.concat(page[key])
@@ -51,6 +49,7 @@ async function paginate(acc, url, token) {
   // TODO: inside the constructor, `offset` concats as string
   // idk why it parses funny in there
   // this workaround guarantees that my offset is a number, not "0100100100..."
+  const params = url.searchParams
   const limit = params.get("limit")
   const offset = parseInt(params.get("offset")) + parseInt(limit)
   const newParams = new URLSearchParams({ limit, offset })
@@ -67,10 +66,7 @@ export function NightbotExportButton({ accessToken, endpoints }) {
     Object.entries(endpoints)
       .filter((endpoint) => endpoint[1])
       .map(async ([key, value]) => {
-        console.log(key)
-        console.log(value)
         const url = `https://api.nightbot.tv/1/${RESOURCES[key].path}`
-        console.log(url)
 
         if (!value) {
           const payload = await fetchPage(url, accessToken)
