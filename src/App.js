@@ -19,24 +19,24 @@ export default function App() {
   }, [params])
 
   const handleChange = (event) => {
-    setEndpointsState({
+    setEndpoints({
       ...endpoints,
       [event.target.name]: event.target.checked,
     })
   }
 
-  const [endpoints, setEndpointsState] = useState({
-    user: { checked: false, path: "/me" },
-    channel: { checked: false, path: "/channel" },
-    custom_commands: { checked: true, path: "/commands" },
-    default_commands: { checked: false, path: "/commands/default" },
-    regulars: { checked: true, path: "/regulars" },
-    playlist: { checked: false, path: "/song_requests/playlist" },
-    song_request_settings: { checked: false, path: "/song_requests" },
-    song_queue: { checked: false, path: "/song_requests/queue" },
-    spam_filters: { checked: false, path: "/spam_protection" },
-    subscribers: { checked: false, path: "/subscribers" },
-    timers: { checked: true, path: "/timers" },
+  const [endpoints, setEndpoints] = useState({
+    user: false,
+    channel: false,
+    custom_commands: true,
+    default_commands: false,
+    regulars: false,
+    playlist: false,
+    song_request_settings: false,
+    song_queue: false,
+    spam_filters: false,
+    subscribers: false,
+    timers: false,
   })
 
   return (

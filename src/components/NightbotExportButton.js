@@ -18,13 +18,26 @@ async function paginate(acc, params, accessToken) {
 }
 
 export function NightbotExportButton({ accessToken, endpoints }) {
+  const paths = {
+    user: "/me",
+    channel: "/channel",
+    custom_commands: "/commands",
+    default_commands: "/commands/default",
+    regulars: "/regulars",
+    playlist: "/song_requests/playlist",
+    song_request_settings: "/song_requests",
+    song_queue: "/song_requests/queue",
+    spam_filters: "/spam_protection",
+    subscribers: "/subscribers",
+    timers: "/timers",
+  }
   const handleExport = async () => {
-    Object.values(endpoints)
-      .filter((endpoint) => endpoint.checked)
-      .map(async (p) => {
-        const path = p.path.replace(/^\//, "")
+    Object.entries(endpoints)
+      .filter((endpoint) => endpoint[1])
+      .map(async (endpoint) => {
+        const path = paths[endpoint[0]]
 
-        if (p === "playlist" || p === "subscribers") {
+        if (endpoint === "playlist" || endpoint === "subscribers") {
           return await paginate(
             [],
             new URLSearchParams({
