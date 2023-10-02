@@ -4,19 +4,6 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Switch from "@mui/material/Switch"
 
 export function NightbotExportSelector({ endpoints, handleChange }) {
-  const pathMap = {
-    user: false,
-    channel: false,
-    custom_commands: true,
-    default_commands: false,
-    regulars: false,
-    playlist: false,
-    song_request_settings: false,
-    song_queue: false,
-    spam_filters: false,
-    subscribers: false,
-    timers: false,
-  }
   const switches = Object.entries(endpoints).map(([name, value]) => (
     <FormControlLabel
       key={name}
