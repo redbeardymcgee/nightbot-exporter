@@ -1,34 +1,63 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-const paths = {
-  user: "/me",
-  channel: "/channel",
-  custom_commands: "/commands",
-  default_commands: "/commands/default",
-  regulars: "/regulars",
-  playlist: "/song_requests/playlist",
-  song_request_settings: "/song_requests",
-  song_queue: "/song_requests/queue",
-  spam_filters: "/spam_protection",
-  subscribers: "/subscribers",
-  timers: "/timers",
+const PATHS = {
+  user: { paged: false, name: "user", path: "me" },
+  channel: { paged: false, name: "channel", path: "channel" },
+  custom_commands: { paged: false, name: "commands", path: "commands" },
+  default_commands: {
+    paged: false,
+    name: "commands_default",
+    path: "commands",
+  },
+  song_request_settings: {
+    paged: false,
+    name: "song_requests_settings",
+    path: "song_requests",
+  },
+  song_queue: {
+    paged: false,
+    name: "song_requests_queue",
+    path: "song_requests/queue",
+  },
+  spam_filters: { paged: false, name: "spam_filters", path: "spam_protection" },
+  timers: { paged: false, name: "timers", path: "timers" },
+  playlist: { paged: true, name: "playlist", path: "song_requests/playlist" },
+  regulars: { paged: true, name: "regulars", path: "regulars" },
+  subscribers: { paged: true, name: "subscribers", path: "subscribers" },
 }
 
-async function paginate(acc, path, params, accessToken) {
-  const page = await fetch(
-    `https://api.nightbot.tv/1${path}?${params.toString()}`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
-  )
-  const payload = await page.json()
-  const arr = acc.push(payload.data)
+const fetchPage = async (url, token) => {
+  const page = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  return await page.json()
+}
 
-  if (arr.length >= payload.data._total) return arr
+async function paginate(acc, url, token, params) {
+  const page = await fetchPage(url, token)
+  const arr = acc.concat(page[resource.name])
 
+  if (arr.length >= page._total) {
+    console.log(arr)
+    return arr
+  }
+
+  // TODO: inside the constructor, `offset` concats as string
+  // idk why it parses funny in there
+  // this workaround guarantees that my offset is a number, not "0100100100..."
+  const limit = params.get("limit")
+  const offset = parseInt(params.get("offset")) + parseInt(limit)
   return await paginate(
     arr,
-    path,
-    new URLSearchParams({ ...params, offset: params.offset + params.limit })
+    resource,
+    token,
+    new URLSearchParams({
+      limit,
+      offset,
+    })
   )
 }
 
@@ -36,25 +65,24 @@ export function NightbotExportButton({ accessToken, endpoints }) {
   const handleExport = async () => {
     Object.entries(endpoints)
       .filter((endpoint) => endpoint[1])
-      .map(async (endpoint) => {
-        const path = paths[endpoint[0]]
+      .map(async ([key, value]) => {
+        const url = `https://api.nightbot.tv/1/${PATHS[key].path}`
 
-        if (path === "playlist" || path === "subscribers") {
-          return await paginate(
-            [],
-            path,
-            new URLSearchParams({
-              limit: 100,
-              offset: 0,
-            }),
-            accessToken
-          )
+        if (!value.paged) {
+          const payload = await fetchPage(url, accessToken)
+          console.log(payload)
+          return payload
         }
 
-        const res = await fetch(`https://api.nightbot.tv/1/${path}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        })
-        return await res.json()
+        return await paginate(
+          [],
+          url,
+          accessToken,
+          new URLSearchParams({
+            limit: 100,
+            offset: 0,
+          })
+        )
       })
   }
 
