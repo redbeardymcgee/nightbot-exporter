@@ -29,14 +29,14 @@ export default function App() {
     user: false,
     channel: false,
     custom_commands: true,
-    default_commands: false,
+    default_commands: true,
     regulars: false,
     playlist: false,
     song_request_settings: false,
     song_queue: false,
     spam_filters: false,
     subscribers: false,
-    timers: false,
+    timers: true,
   })
 
   return (
