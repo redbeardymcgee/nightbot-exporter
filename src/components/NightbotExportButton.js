@@ -2,29 +2,29 @@ import React from "react"
 import Button from "@mui/material/Button"
 
 const RESOURCES = {
-  user: { paged: false, name: "user", path: "me" },
-  channel: { paged: false, name: "channel", path: "channel" },
-  custom_commands: { paged: false, name: "commands", path: "commands" },
+  user: { paged: false, key: "user", path: "me" },
+  channel: { paged: false, key: "channel", path: "channel" },
+  custom_commands: { paged: false, key: "commands", path: "commands" },
+  spam_filters: { paged: false, key: "spam_filters", path: "spam_protection" },
+  timers: { paged: false, key: "timers", path: "timers" },
+  playlist: { paged: true, key: "playlist", path: "song_requests/playlist" },
+  regulars: { paged: true, key: "regulars", path: "regulars" },
+  subscribers: { paged: true, key: "subscribers", path: "subscribers" },
   default_commands: {
     paged: false,
-    name: "commands_default",
+    key: "commands_default",
     path: "commands",
   },
   song_request_settings: {
     paged: false,
-    name: "song_requests_settings",
+    key: "song_requests_settings",
     path: "song_requests",
   },
   song_queue: {
     paged: false,
-    name: "song_requests_queue",
+    key: "song_requests_queue",
     path: "song_requests/queue",
   },
-  spam_filters: { paged: false, name: "spam_filters", path: "spam_protection" },
-  timers: { paged: false, name: "timers", path: "timers" },
-  playlist: { paged: true, name: "playlist", path: "song_requests/playlist" },
-  regulars: { paged: true, name: "regulars", path: "regulars" },
-  subscribers: { paged: true, name: "subscribers", path: "subscribers" },
 }
 
 const fetchPage = async (url, token) => {
@@ -38,7 +38,10 @@ const fetchPage = async (url, token) => {
 
 async function paginate(acc, url, token) {
   const page = await fetchPage(url, token)
-  const key = url.pathname.replace(/^\/1\//, "")
+  console.log(url.pathname)
+  const replace = url.pathname.replace(/^\/1\//, "")
+  console.log("replace: ", replace)
+  const key = RESOURCES[replace]
   const arr = acc.concat(page[key])
 
   if (arr.length >= page._total) {
@@ -56,7 +59,7 @@ async function paginate(acc, url, token) {
 
   return await paginate(
     arr,
-    new URL(`${url.origin}/${url.pathname}?${newParams.toString()}`),
+    new URL(`${url.origin}${url.pathname}?${newParams.toString()}`),
     token
   )
 }
