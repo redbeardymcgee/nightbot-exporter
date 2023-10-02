@@ -18,13 +18,6 @@ export default function App() {
     }
   }, [params])
 
-  const handleChange = (event) => {
-    setEndpoints({
-      ...endpoints,
-      [event.target.name]: event.target.checked,
-    })
-  }
-
   const [endpoints, setEndpoints] = useState({
     user: false,
     channel: false,
@@ -39,13 +32,18 @@ export default function App() {
     timers: true,
   })
 
+  const handleChange = (event) => {
+    setEndpoints((endpoints) => {
+      return { ...endpoints, [event.target.name]: event.target.checked }
+    })
+  }
+
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
           {accessToken ? (
             <>
-              {" "}
               <NightbotExportSelector
                 endpoints={endpoints}
                 handleChange={handleChange}
