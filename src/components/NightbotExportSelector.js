@@ -4,16 +4,24 @@ import FormControlLabel from "@mui/material/FormControlLabel"
 import Switch from "@mui/material/Switch"
 
 export function NightbotExportSelector({ endpoints, handleChange }) {
-  const switches = Object.entries(endpoints).map(([name, value]) => (
-    <FormControlLabel
-      key={name}
-      control={<Switch checked={value} onChange={handleChange} name={name} />}
-      label={name
-        .split("_")
-        .map((word) => word.charAt(0).toLocaleUpperCase() + word.slice(1))
-        .join(" ")}
-    />
-  ))
+  const switches = Object.entries(endpoints).map(([key, value]) => {
+    // console.log("key = ", key)
+    // console.log("val = ", value)
+
+    return (
+      <FormControlLabel
+        key={key}
+        control={
+          <Switch name={key} checked={value.checked} onChange={handleChange} />
+        }
+        label={key
+          .split("_")
+          .map((name) => name.charAt(0).toLocaleUpperCase() + name.slice(1))
+          .join(" ")}
+      />
+    )
+  })
+
   return (
     <FormGroup>
       {switches.sort((a, b) => {
