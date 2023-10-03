@@ -8,9 +8,35 @@ import { NightbotAuthButton } from "./components/NightbotAuthButton"
 import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
 
+const ENDPOINTS = {
+  user: { checked: false, key: "user", path: "/me" },
+  channel: { checked: false, key: "channel", path: "/channel" },
+  custom_commands: { checked: true, key: "commands", path: "/commands" },
+  spam_filters: { checked: false, key: "filters", path: "/spam_protection" },
+  timers: { checked: true, key: "timers", path: "/timers" },
+  playlist: {
+    checked: false,
+    key: "playlist",
+    path: "/song_requests/playlist",
+  },
+  regulars: { checked: false, key: "regulars", path: "/regulars" },
+  subscribers: { checked: false, key: "subscribers", path: "/subscribers" },
+  default_commands: {
+    checked: true,
+    key: "commands",
+    path: "/commands/default",
+  },
+  song_request_settings: {
+    checked: false,
+    key: "settings",
+    path: "/song_requests",
+  },
+  song_queue: { checked: false, key: "queue", path: "/song_requests/queue" },
+}
+
 export default function App() {
   const [accessToken, setAccessToken] = useState(null)
-  const params = new URLSearchParams(window.location.hash.replace("#", ""))
+  const params = new URLSearchParams(window.location.hash.replace("#", "?"))
 
   useEffect(() => {
     if (params.get("access_token")) {
@@ -18,25 +44,21 @@ export default function App() {
     }
   }, [params])
 
-  const [endpoints, setEndpoints] = useState({
-    user: false,
-    channel: false,
-    custom_commands: true,
-    default_commands: true,
-    regulars: false,
-    playlist: false,
-    song_request_settings: false,
-    song_queue: false,
-    spam_filters: false,
-    subscribers: false,
-    timers: true,
-  })
+  const [endpoints, setEndpoints] = useState(ENDPOINTS)
 
   const handleChange = (event) => {
     setEndpoints((endpoints) => {
-      return { ...endpoints, [event.target.name]: event.target.checked }
+      return {
+        ...endpoints,
+        [event.target.name]: {
+          ...endpoints[event.target.name],
+          checked: event.target.checked,
+        },
+      }
     })
   }
+
+  // useEffect(() => console.log("endpoints = ", endpoints), [endpoints])
 
   return (
     <Container maxWidth="sm">
