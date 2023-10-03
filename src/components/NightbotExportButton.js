@@ -12,22 +12,28 @@ const fetchPage = async (url, token) => {
 }
 
 async function fetchResource(acc, url, key, token) {
-  const page = await fetchPage(url, token)
-  const total = page._total ? page._total : 0
+  try {
+    const page = await fetchPage(url, token)
+    const total = page._total ? page._total : 0
 
-  if (!total) return page
+    if (!total) return page
 
-  const arr = acc.concat(page[key])
+    const arr = acc.concat(page[key])
 
-  if (arr.length >= total) {
-    return arr
+    if (arr.length >= total) {
+      return arr
+    }
+
+    const params = url.searchParams
+    const offset =
+      parseInt(params.get("offset")) + parseInt(params.get("limit"))
+    url.searchParams.set("offset", offset)
+
+    const resource = await fetchResource(arr, url, key, token)
+    return resource
+  } catch (err) {
+    console.log(err)
   }
-
-  const params = url.searchParams
-  const offset = parseInt(params.get("offset")) + parseInt(params.get("limit"))
-  url.searchParams.set("offset", offset)
-
-  return await fetchResource(arr, url.href, key, token)
 }
 
 export function NightbotExportButton({ accessToken, endpoints }) {
@@ -40,14 +46,9 @@ export function NightbotExportButton({ accessToken, endpoints }) {
         url.searchParams.set("limit", 100)
         url.searchParams.set("offset", 0)
 
-        const payload = await fetchResource(
-          [],
-          url.href,
-          endpoint.key,
-          accessToken
-        )
+        const payload = await fetchResource([], url, endpoint.key, accessToken)
 
-        console.log(payload)
+        console.log("payload: ", payload)
         return payload
       })
   }
