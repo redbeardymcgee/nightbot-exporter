@@ -27,8 +27,8 @@ async function fetchResource(
     return acc
   }
 
-  const currentOffset = Number(url.searchParams.get("offset"))
-  const limit = Number(url.searchParams.get("limit"))
+  const currentOffset = Number(url.searchParams.get("offset") || 0)
+  const limit = Number(url.searchParams.get("limit") || 0)
   const newOffset = currentOffset + limit
   url.searchParams.set("offset", newOffset.toString())
 
