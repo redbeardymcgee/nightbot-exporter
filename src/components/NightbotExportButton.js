@@ -46,7 +46,7 @@ export function NightbotExportButton({ accessToken, endpoints }) {
         }
         const payload = await fetchResource([], url, endpoint.key, options)
 
-        console.log(`payload: ${path} == ${payload}`)
+        console.log(`payload: ${path} == `, payload)
         return payload
       })
   }
