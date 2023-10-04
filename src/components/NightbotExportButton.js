@@ -1,39 +1,33 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-const fetchPage = async (url, token) => {
-  const options = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
+const fetchPage = async (url, options) => {
   const page = await fetch(url, options)
-  return await page.json()
+  const payload = await page.json()
+  return payload
 }
 
-async function fetchResource(acc, url, key, token) {
+async function fetchResource(acc, url, key, options) {
+  const page = await fetchPage(url, options)
+  const total = page._total ? page._total : 0
+
   try {
-    const page = await fetchPage(url, token)
-    const total = page._total ? page._total : 0
-
-    if (!total) return page
-
-    const arr = acc.concat(page[key])
-
-    if (arr.length >= total) {
-      return arr
-    }
-
-    const params = url.searchParams
-    const offset =
-      parseInt(params.get("offset")) + parseInt(params.get("limit"))
-    url.searchParams.set("offset", offset)
-
-    const resource = await fetchResource(arr, url, key, token)
-    return resource
-  } catch (err) {
-    console.log(err)
+    acc.push(...page[key])
+  } catch {
+    acc.push(page[key])
   }
+
+  if (acc.length >= total) {
+    return acc
+  }
+
+  url.searchParams.set(
+    "offset",
+    parseInt(url.searchParams.get("offset")) +
+      parseInt(url.searchParams.get("limit"))
+  )
+
+  return await fetchResource(acc, url, key, options)
 }
 
 export function NightbotExportButton({ accessToken, endpoints }) {
@@ -42,11 +36,17 @@ export function NightbotExportButton({ accessToken, endpoints }) {
       .filter((endpoint) => endpoint.checked)
       .map(async (endpoint) => {
         const path = endpoint.path.slice(1)
-        const url = new URL(`https://api.nightbot.tv/1/${path}`)
-        url.searchParams.set("limit", 100)
-        url.searchParams.set("offset", 0)
+        const params = new URLSearchParams({ offset: 0, limit: 100 })
+        const url = new URL(
+          `https://api.nightbot.tv/1/${path}?${params.toString()}`
+        )
 
-        const payload = await fetchResource([], url, endpoint.key, accessToken)
+        const options = {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+        const payload = await fetchResource([], url, endpoint.key, options)
 
         console.log("payload: ", payload)
         return payload
