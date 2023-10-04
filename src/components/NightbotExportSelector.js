@@ -3,11 +3,8 @@ import FormGroup from "@mui/material/FormGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Switch from "@mui/material/Switch"
 
-export function NightbotExportSelector({ endpoints, handleChange }) {
+export function NightbotExportSwitches({ endpoints, handleChange }) {
   const switches = Object.entries(endpoints).map(([key, value]) => {
-    // console.log("key = ", key)
-    // console.log("val = ", value)
-
     return (
       <FormControlLabel
         key={key}
@@ -22,13 +19,19 @@ export function NightbotExportSelector({ endpoints, handleChange }) {
     )
   })
 
+  return switches.sort((a, b) => {
+    if (a.key > b.key) return 1
+    if (a.key < b.key) return -1
+    return 0
+  })
+}
+export function NightbotExportSelector({ endpoints, handleChange }) {
   return (
     <FormGroup>
-      {switches.sort((a, b) => {
-        if (a.key > b.key) return 1
-        if (a.key < b.key) return -1
-        return 0
-      })}
+      <NightbotExportSwitches
+        endpoints={endpoints}
+        handleChange={handleChange}
+      />
     </FormGroup>
   )
 }
