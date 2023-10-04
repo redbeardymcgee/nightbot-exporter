@@ -3,8 +3,7 @@ import Button from "@mui/material/Button"
 
 const fetchPage = async (url, options) => {
   const page = await fetch(url, options)
-  const payload = await page.json()
-  return payload
+  return await page.json()
 }
 
 async function fetchResource(acc, url, key, options) {
@@ -35,12 +34,11 @@ export function NightbotExportButton({ accessToken, endpoints }) {
     Object.values(endpoints)
       .filter((endpoint) => endpoint.checked)
       .map(async (endpoint) => {
-        const path = endpoint.path.slice(1)
+        const path = endpoint.path
         const params = new URLSearchParams({ offset: 0, limit: 100 })
         const url = new URL(
-          `https://api.nightbot.tv/1/${path}?${params.toString()}`
+          `https://api.nightbot.tv/1${path}?${params.toString()}`
         )
-
         const options = {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -48,7 +46,7 @@ export function NightbotExportButton({ accessToken, endpoints }) {
         }
         const payload = await fetchResource([], url, endpoint.key, options)
 
-        console.log("payload: ", payload)
+        console.log(`payload: ${path} == ${payload}`)
         return payload
       })
   }
