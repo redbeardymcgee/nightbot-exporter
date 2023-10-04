@@ -46,7 +46,7 @@ export default function App() {
 
   const [endpoints, setEndpoints] = useState(ENDPOINTS)
 
-  const handleChange = (event) => {
+  function handleChange(event) {
     setEndpoints((endpoints) => {
       return {
         ...endpoints,

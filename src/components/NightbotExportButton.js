@@ -1,7 +1,7 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-const fetchPage = async (url, options) => {
+async function fetchPage(url, options) {
   const page = await fetch(url, options)
   return await page.json()
 }
@@ -30,7 +30,7 @@ async function fetchResource(acc, url, key, options) {
 }
 
 export function NightbotExportButton({ accessToken, endpoints }) {
-  const handleExport = async () => {
+  async function handleExport() {
     Object.values(endpoints)
       .filter((endpoint) => endpoint.checked)
       .map(async (endpoint) => {
