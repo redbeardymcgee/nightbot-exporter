@@ -1,9 +1,9 @@
 import React from "react"
 import { Button } from "@mui/material"
 
-import { Headers, NightbotExportButtonProps } from "../../types/types"
+import { FetchOptions, NightbotExportButtonProps } from "../../types/types"
 
-async function fetchPage(url: URL, options: Headers) {
+async function fetchPage(url: URL, options: FetchOptions) {
   const page = await fetch(url, options)
   return await page.json()
 }
@@ -12,7 +12,7 @@ async function fetchResource(
   acc: object[],
   url: URL,
   key: string,
-  options: Headers
+  options: FetchOptions
 ): Promise<any> {
   const page = await fetchPage(url, options)
   const total = page._total ? page._total : 0

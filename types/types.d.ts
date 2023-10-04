@@ -18,7 +18,7 @@ export type NightbotExportSwitchesProps = {
   handleChange: ChangeEventHandler<HTMLInputElement>
 }
 
-export type Headers = {
+export type FetchOptions = {
   headers: {
     Authorization: string
   }
