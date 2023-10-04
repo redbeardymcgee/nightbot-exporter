@@ -1,7 +1,5 @@
 import React from "react"
-import { FormGroup } from "@mui/material"
-import { FormControlLabel } from "@mui/material"
-import { Switch } from "@mui/material"
+import { FormGroup, FormControlLabel, Stack, Switch } from "@mui/material"
 
 import { NightbotExportSwitchesProps } from "../../types/types"
 
@@ -11,16 +9,16 @@ function NightbotExportSwitches({
 }: NightbotExportSwitchesProps) {
   const switches = Object.entries(endpoints).map(([key, value]) => {
     return (
-      <FormControlLabel
-        key={key}
-        control={
-          <Switch name={key} checked={value.checked} onChange={handleChange} />
-        }
-        label={key
-          .split("_")
-          .map((name) => name.charAt(0).toLocaleUpperCase() + name.slice(1))
-          .join(" ")}
-      />
+      <Stack key={key} direction="row" spacing={1} alignItems="center">
+        <FormControlLabel
+          label={key
+            .split("_")
+            .map((name) => name.charAt(0).toLocaleUpperCase() + name.slice(1))
+            .join(" ")}
+          checked={value.checked}
+          control={<Switch name={key} onChange={handleChange} />}
+        />
+      </Stack>
     )
   })
 
