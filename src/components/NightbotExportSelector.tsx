@@ -1,14 +1,9 @@
-import React, { ChangeEventHandler } from "react"
+import React from "react"
 import { FormGroup } from "@mui/material"
 import { FormControlLabel } from "@mui/material"
 import { Switch } from "@mui/material"
 
-import { Endpoints } from "../App"
-
-type NightbotExportSwitchesProps = {
-  endpoints: Endpoints
-  handleChange: ChangeEventHandler<HTMLInputElement>
-}
+import { NightbotExportSwitchesProps } from "../../types/types"
 
 function NightbotExportSwitches({
   endpoints,
@@ -32,7 +27,7 @@ function NightbotExportSwitches({
   return (
     <>
       {switches.sort((a, b) => {
-        if (a.key !== null && b.key !== null) {
+        if (a.key && b.key) {
           return a.key.localeCompare(b.key)
         }
         return 0

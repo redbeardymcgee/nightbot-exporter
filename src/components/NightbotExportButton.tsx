@@ -1,18 +1,7 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-import { Endpoints } from "../App"
-
-type Headers = {
-  headers: {
-    Authorization: string
-  }
-}
-
-type NightbotExportButtonProps = {
-  accessToken: string
-  endpoints: Endpoints
-}
+import { Headers, NightbotExportButtonProps } from "../../types/types"
 
 async function fetchPage(url: URL, options: Headers) {
   const page = await fetch(url, options)

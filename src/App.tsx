@@ -4,17 +4,11 @@ import { Container } from "@mui/material"
 import { Typography } from "@mui/material"
 import { Box } from "@mui/material"
 
+import { Endpoints } from "../types/types"
+
 import { NightbotAuthButton } from "./components/NightbotAuthButton"
 import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
-
-type Endpoint = {
-  checked: boolean
-  key: string
-  path: string
-}
-
-export type Endpoints = Record<string, Endpoint>
 
 const ENDPOINTS: Endpoints = {
   user: { checked: false, key: "user", path: "/me" },
