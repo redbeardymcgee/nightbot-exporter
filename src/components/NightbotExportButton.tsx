@@ -1,12 +1,30 @@
 import React from "react"
 import Button from "@mui/material/Button"
 
-async function fetchPage(url, options) {
+import { Endpoints } from "../App"
+
+type Headers = {
+  headers: {
+    Authorization: string
+  }
+}
+
+type NightbotExportButtonProps = {
+  accessToken: string
+  endpoints: Endpoints
+}
+
+async function fetchPage(url: URL, options: Headers) {
   const page = await fetch(url, options)
   return await page.json()
 }
 
-async function fetchResource(acc, url, key, options) {
+async function fetchResource(
+  acc: object[],
+  url: URL,
+  key: string,
+  options: Headers
+): Promise<any> {
   const page = await fetchPage(url, options)
   const total = page._total ? page._total : 0
 
@@ -20,22 +38,24 @@ async function fetchResource(acc, url, key, options) {
     return acc
   }
 
-  url.searchParams.set(
-    "offset",
-    parseInt(url.searchParams.get("offset")) +
-      parseInt(url.searchParams.get("limit"))
-  )
+  const currentOffset = Number(url.searchParams.get("offset"))
+  const limit = Number(url.searchParams.get("limit"))
+  const newOffset = currentOffset + limit
+  url.searchParams.set("offset", newOffset.toString())
 
   return await fetchResource(acc, url, key, options)
 }
 
-export function NightbotExportButton({ accessToken, endpoints }) {
+export function NightbotExportButton({
+  accessToken,
+  endpoints,
+}: NightbotExportButtonProps) {
   async function handleExport() {
     Object.values(endpoints)
       .filter((endpoint) => endpoint.checked)
       .map(async (endpoint) => {
         const path = endpoint.path
-        const params = new URLSearchParams({ offset: 0, limit: 100 })
+        const params = new URLSearchParams({ offset: "0", limit: "100" })
         const url = new URL(
           `https://api.nightbot.tv/1${path}?${params.toString()}`
         )

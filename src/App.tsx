@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 
-import Container from "@mui/material/Container"
-import Typography from "@mui/material/Typography"
-import Box from "@mui/material/Box"
-// import Link from "@mui/material/Link"
+import { Container } from "@mui/material"
+import { Typography } from "@mui/material"
+import { Box } from "@mui/material"
+
 import { NightbotAuthButton } from "./components/NightbotAuthButton"
 import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
 
-const ENDPOINTS = {
+type Endpoint = {
+  checked: boolean
+  key: string
+  path: string
+}
+
+export type Endpoints = Record<string, Endpoint>
+
+const ENDPOINTS: Endpoints = {
   user: { checked: false, key: "user", path: "/me" },
   channel: { checked: false, key: "channel", path: "/channel" },
   custom_commands: { checked: true, key: "commands", path: "/commands" },
@@ -35,18 +43,18 @@ const ENDPOINTS = {
 }
 
 export default function App() {
-  const [accessToken, setAccessToken] = useState(null)
+  const [accessToken, setAccessToken] = useState("")
   const params = new URLSearchParams(window.location.hash.replace("#", "?"))
 
   useEffect(() => {
     if (params.get("access_token")) {
-      setAccessToken(params.get("access_token"))
+      setAccessToken(params.get("access_token") as string)
     }
   }, [params])
 
   const [endpoints, setEndpoints] = useState(ENDPOINTS)
 
-  function handleChange(event) {
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setEndpoints((endpoints) => {
       return {
         ...endpoints,
@@ -57,8 +65,6 @@ export default function App() {
       }
     })
   }
-
-  // useEffect(() => console.log("endpoints = ", endpoints), [endpoints])
 
   return (
     <Container maxWidth="sm">
