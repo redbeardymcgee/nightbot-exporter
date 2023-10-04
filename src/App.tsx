@@ -1,14 +1,11 @@
 import React, { useState, useEffect, ChangeEvent } from "react"
-
 import { Container } from "@mui/material"
 import { Typography } from "@mui/material"
 import { Box } from "@mui/material"
-
-import { Endpoints } from "../types/types"
-
 import { NightbotAuthButton } from "./components/NightbotAuthButton"
 import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
+import { Endpoints } from "../types/types"
 
 const ENDPOINTS: Endpoints = {
   user: { checked: false, key: "user", path: "/me" },
@@ -64,17 +61,15 @@ export default function App() {
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
+          <NightbotExportSelector
+            endpoints={endpoints}
+            handleChange={handleChange}
+          />
           {accessToken ? (
-            <>
-              <NightbotExportSelector
-                endpoints={endpoints}
-                handleChange={handleChange}
-              />
-              <NightbotExportButton
-                accessToken={accessToken}
-                endpoints={endpoints}
-              />
-            </>
+            <NightbotExportButton
+              accessToken={accessToken}
+              endpoints={endpoints}
+            />
           ) : (
             <NightbotAuthButton />
           )}
