@@ -64,7 +64,7 @@ async function handleExport(token: string, endpoints: Endpoints) {
 export function NightbotExportButton({
   token,
   endpoints,
-}: NightbotExportButtonProps): React.JSX.Element {
+}: NightbotExportButtonProps) {
   return (
     <Box>
       <Button
