@@ -8,12 +8,12 @@ async function fetchPage(url: URL, options: FetchOptions) {
   return await page.json()
 }
 
-async function fetchResource(
-  acc: object[],
+async function fetchResource<T>(
+  acc: T[],
   url: URL,
   key: string,
   options: FetchOptions
-): Promise<any> {
+): Promise<T[]> {
   const page = await fetchPage(url, options)
   const total = page._total ? page._total : 0
 
