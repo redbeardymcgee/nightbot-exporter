@@ -6,9 +6,7 @@ interface Endpoint {
   path: string
 }
 
-export interface Endpoints {
-  [key: string]: Endpoint
-}
+export type Endpoints = Record<string, Endpoint>
 
 export interface FetchOptions {
   headers: {
@@ -16,17 +14,12 @@ export interface FetchOptions {
   }
 }
 
-interface NightbotExportButtonProps {
+type NightbotExportButtonProps = {
   token: string
   endpoints: Endpoints
 }
 
-interface NightbotExportSwitchesProps {
+type NightbotExportSwitchesProps = {
   endpoints: Endpoints
   handleChange: ChangeEventHandler<HTMLInputElement>
 }
-
-// export interface NightbotExportSwitches {
-//   ({ endpoints, handleChange }: NightbotExportSwitchesProps): JSX.Element
-// }
-// export interface NightbotExportSelector {}
