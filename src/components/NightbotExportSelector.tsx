@@ -1,7 +1,11 @@
 import React from "react"
 import { FormGroup, FormControlLabel, Stack, Switch } from "@mui/material"
-
-import { NightbotExportSwitchesProps } from "../../types"
+import {
+  NightbotExportSwitchesProps,
+  NightbotExportSelectorProps,
+} from "../../types"
+import { NightbotExportButton } from "./NightbotExportButton"
+import { NightbotAuthButton } from "./NightbotAuthButton"
 
 function NightbotExportSwitches({
   endpoints,
@@ -33,14 +37,20 @@ function NightbotExportSwitches({
 
 export function NightbotExportSelector({
   endpoints,
+  token,
   handleChange,
-}: NightbotExportSwitchesProps) {
+}: NightbotExportSelectorProps) {
   return (
     <FormGroup>
       <NightbotExportSwitches
         endpoints={endpoints}
         handleChange={handleChange}
       />
+      {token ? (
+        <NightbotExportButton token={token} endpoints={endpoints} />
+      ) : (
+        <NightbotAuthButton />
+      )}
     </FormGroup>
   )
 }

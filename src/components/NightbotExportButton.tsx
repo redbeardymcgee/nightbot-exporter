@@ -1,7 +1,7 @@
 import React from "react"
-import { Button } from "@mui/material"
+import { Box, Button } from "@mui/material"
 
-import { FetchOptions, NightbotExportButtonProps } from "../../types"
+import { Endpoints, FetchOptions, NightbotExportButtonProps } from "../../types"
 
 async function fetchPage(url: URL, options: FetchOptions) {
   const page = await fetch(url, options)
@@ -35,34 +35,44 @@ async function fetchResource<T>(
   return await fetchResource(acc, url, key, options)
 }
 
+async function handleExport(token: string, endpoints: Endpoints) {
+  Object.values(endpoints)
+    .filter((endpoint) => endpoint.checked)
+    .map(async (endpoint) => {
+      const path = endpoint.path
+      const params = new URLSearchParams({ offset: "0", limit: "100" })
+      const url = new URL(
+        `https://api.nightbot.tv/1${path}?${params.toString()}`
+      )
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      const resource = await fetchResource(
+        [],
+        url,
+        endpoint.resource_key,
+        options
+      )
+
+      console.log(`payload: ${path} == `, resource)
+      return resource
+    })
+}
+
 export function NightbotExportButton({
   token,
   endpoints,
 }: NightbotExportButtonProps): React.JSX.Element {
-  async function handleExport() {
-    Object.values(endpoints)
-      .filter((endpoint) => endpoint.checked)
-      .map(async (endpoint) => {
-        const path = endpoint.path
-        const params = new URLSearchParams({ offset: "0", limit: "100" })
-        const url = new URL(
-          `https://api.nightbot.tv/1${path}?${params.toString()}`
-        )
-        const options = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-        const payload = await fetchResource([], url, endpoint.key, options)
-
-        console.log(`payload: ${path} == `, payload)
-        return payload
-      })
-  }
-
   return (
-    <Button variant="contained" onClick={handleExport}>
-      Export
-    </Button>
+    <Box>
+      <Button
+        variant="contained"
+        onClick={() => handleExport(token, endpoints)}
+      >
+        Export
+      </Button>
+    </Box>
   )
 }

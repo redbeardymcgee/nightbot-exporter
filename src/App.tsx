@@ -1,36 +1,48 @@
 import React, { useState, useEffect, ChangeEvent } from "react"
 import { Container } from "@mui/material"
-import { Typography } from "@mui/material"
-import { Box } from "@mui/material"
-import { NightbotAuthButton } from "./components/NightbotAuthButton"
-import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
 import { Endpoints } from "../types"
 
 const ENDPOINTS: Endpoints = {
-  user: { checked: false, key: "user", path: "/me" },
-  channel: { checked: false, key: "channel", path: "/channel" },
-  custom_commands: { checked: true, key: "commands", path: "/commands" },
-  spam_filters: { checked: false, key: "filters", path: "/spam_protection" },
-  timers: { checked: true, key: "timers", path: "/timers" },
+  user: { checked: false, resource_key: "user", path: "/me" },
+  channel: { checked: false, resource_key: "channel", path: "/channel" },
+  custom_commands: {
+    checked: true,
+    resource_key: "commands",
+    path: "/commands",
+  },
+  spam_filters: {
+    checked: false,
+    resource_key: "filters",
+    path: "/spam_protection",
+  },
+  timers: { checked: true, resource_key: "timers", path: "/timers" },
   playlist: {
     checked: false,
-    key: "playlist",
+    resource_key: "playlist",
     path: "/song_requests/playlist",
   },
-  regulars: { checked: false, key: "regulars", path: "/regulars" },
-  subscribers: { checked: false, key: "subscribers", path: "/subscribers" },
+  regulars: { checked: false, resource_key: "regulars", path: "/regulars" },
+  subscribers: {
+    checked: false,
+    resource_key: "subscribers",
+    path: "/subscribers",
+  },
   default_commands: {
     checked: true,
-    key: "commands",
+    resource_key: "commands",
     path: "/commands/default",
   },
   song_request_settings: {
     checked: false,
-    key: "settings",
+    resource_key: "settings",
     path: "/song_requests",
   },
-  song_queue: { checked: false, key: "queue", path: "/song_requests/queue" },
+  song_queue: {
+    checked: false,
+    resource_key: "queue",
+    path: "/song_requests/queue",
+  },
 }
 
 export default function App() {
@@ -59,19 +71,11 @@ export default function App() {
 
   return (
     <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          <NightbotExportSelector
-            endpoints={endpoints}
-            handleChange={handleChange}
-          />
-          {token ? (
-            <NightbotExportButton token={token} endpoints={endpoints} />
-          ) : (
-            <NightbotAuthButton />
-          )}
-        </Typography>
-      </Box>
+      <NightbotExportSelector
+        endpoints={endpoints}
+        token={token}
+        handleChange={handleChange}
+      />
     </Container>
   )
 }

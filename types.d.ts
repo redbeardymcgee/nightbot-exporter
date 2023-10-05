@@ -2,7 +2,7 @@ import { ChangeEventHandler } from "react"
 
 interface Endpoint {
   checked: boolean
-  key: string
+  resource_key: string
   path: string
 }
 
@@ -21,5 +21,11 @@ type NightbotExportButtonProps = {
 
 type NightbotExportSwitchesProps = {
   endpoints: Endpoints
+  handleChange: ChangeEventHandler<HTMLInputElement>
+}
+
+type NightbotExportSelectorProps = {
+  endpoints: Endpoints
+  token: string
   handleChange: ChangeEventHandler<HTMLInputElement>
 }
