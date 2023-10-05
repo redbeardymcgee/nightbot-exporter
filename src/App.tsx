@@ -5,7 +5,7 @@ import { Box } from "@mui/material"
 import { NightbotAuthButton } from "./components/NightbotAuthButton"
 import { NightbotExportButton } from "./components/NightbotExportButton"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
-import { Endpoints } from "../types/types"
+import { Endpoints } from "../types"
 
 const ENDPOINTS: Endpoints = {
   user: { checked: false, key: "user", path: "/me" },
@@ -34,12 +34,12 @@ const ENDPOINTS: Endpoints = {
 }
 
 export default function App() {
-  const [accessToken, setAccessToken] = useState("")
+  const [token, setToken] = useState("")
   const params = new URLSearchParams(window.location.hash.replace("#", "?"))
 
   useEffect(() => {
     if (params.get("access_token")) {
-      setAccessToken(params.get("access_token") as string)
+      setToken(params.get("access_token")!)
     }
   }, [params])
 
@@ -65,11 +65,8 @@ export default function App() {
             endpoints={endpoints}
             handleChange={handleChange}
           />
-          {accessToken ? (
-            <NightbotExportButton
-              accessToken={accessToken}
-              endpoints={endpoints}
-            />
+          {token ? (
+            <NightbotExportButton token={token} endpoints={endpoints} />
           ) : (
             <NightbotAuthButton />
           )}

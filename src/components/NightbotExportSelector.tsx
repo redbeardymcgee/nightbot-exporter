@@ -1,7 +1,7 @@
 import React from "react"
 import { FormGroup, FormControlLabel, Stack, Switch } from "@mui/material"
 
-import { NightbotExportSwitchesProps } from "../../types/types"
+import { NightbotExportSwitchesProps } from "../../types"
 
 function NightbotExportSwitches({
   endpoints,
@@ -25,10 +25,7 @@ function NightbotExportSwitches({
   return (
     <>
       {switches.sort((a, b) => {
-        if (a.key && b.key) {
-          return a.key.localeCompare(b.key)
-        }
-        return 0
+        return a.key!.localeCompare(b.key!)
       })}
     </>
   )

@@ -1,7 +1,7 @@
 import React from "react"
 import { Button } from "@mui/material"
 
-import { FetchOptions, NightbotExportButtonProps } from "../../types/types"
+import { FetchOptions, NightbotExportButtonProps } from "../../types"
 
 async function fetchPage(url: URL, options: FetchOptions) {
   const page = await fetch(url, options)
@@ -36,9 +36,9 @@ async function fetchResource(
 }
 
 export function NightbotExportButton({
-  accessToken,
+  token,
   endpoints,
-}: NightbotExportButtonProps) {
+}: NightbotExportButtonProps): React.JSX.Element {
   async function handleExport() {
     Object.values(endpoints)
       .filter((endpoint) => endpoint.checked)
@@ -50,7 +50,7 @@ export function NightbotExportButton({
         )
         const options = {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
         const payload = await fetchResource([], url, endpoint.key, options)
