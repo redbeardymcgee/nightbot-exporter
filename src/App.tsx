@@ -7,7 +7,7 @@ const ENDPOINTS: Endpoints = {
   user: { checked: false, resource_key: "user", path: "/me" },
   channel: { checked: false, resource_key: "channel", path: "/channel" },
   custom_commands: {
-    checked: true,
+    checked: false,
     resource_key: "commands",
     path: "/commands",
   },
@@ -16,7 +16,7 @@ const ENDPOINTS: Endpoints = {
     resource_key: "filters",
     path: "/spam_protection",
   },
-  timers: { checked: true, resource_key: "timers", path: "/timers" },
+  timers: { checked: false, resource_key: "timers", path: "/timers" },
   playlist: {
     checked: false,
     resource_key: "playlist",
@@ -29,7 +29,7 @@ const ENDPOINTS: Endpoints = {
     path: "/subscribers",
   },
   default_commands: {
-    checked: true,
+    checked: false,
     resource_key: "commands",
     path: "/commands/default",
   },
