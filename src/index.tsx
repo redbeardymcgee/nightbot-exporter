@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { StrictMode } from "react"
 import * as ReactDOM from "react-dom/client"
 import { CssBaseline } from "@mui/material"
 import { ThemeProvider } from "@mui/material/styles"
@@ -9,8 +9,10 @@ const rootElement = document.getElementById("root") as HTMLElement
 const root = ReactDOM.createRoot(rootElement)
 
 root.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <App />
-  </ThemeProvider>
+  <StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  </StrictMode>
 )

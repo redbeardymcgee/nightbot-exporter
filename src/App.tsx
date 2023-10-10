@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react"
+import React, { useState, useEffect, ChangeEvent, StrictMode } from "react"
 import { Container } from "@mui/material"
 import { NightbotExportSelector } from "./components/NightbotExportSelector"
 import { Endpoints } from "../types"
