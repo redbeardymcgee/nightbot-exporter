@@ -13,14 +13,24 @@ function NightbotExportSwitches({
 }: NightbotExportSwitchesProps) {
   const switches = Object.entries(endpoints).map(([key, value]) => {
     return (
-      <Stack key={key} direction="row" spacing={1} alignItems="center">
+      <Stack
+        key={key}
+        direction="row"
+        spacing={1}
+        alignItems="center"
+      >
         <FormControlLabel
           label={key
             .split("_")
             .map((name) => name.charAt(0).toLocaleUpperCase() + name.slice(1))
             .join(" ")}
           checked={value.checked}
-          control={<Switch name={key} onChange={handleChange} />}
+          control={
+            <Switch
+              name={key}
+              onChange={handleChange}
+            />
+          }
         />
       </Stack>
     )
@@ -47,7 +57,10 @@ export function NightbotExportSelector({
         handleChange={handleChange}
       />
       {token ? (
-        <NightbotExportButton token={token} endpoints={endpoints} />
+        <NightbotExportButton
+          token={token}
+          endpoints={endpoints}
+        />
       ) : (
         <NightbotAuthButton />
       )}

@@ -12,7 +12,7 @@ async function fetchResource<T>(
   acc: T[],
   url: URL,
   key: string,
-  options: FetchOptions
+  options: FetchOptions,
 ): Promise<T[]> {
   const page = await fetchPage(url, options)
   const total = page._total ? page._total : 0
@@ -42,7 +42,7 @@ async function handleExport(token: string, endpoints: Endpoints) {
       const path = endpoint.path
       const params = new URLSearchParams({ offset: "0", limit: "100" })
       const url = new URL(
-        `https://api.nightbot.tv/1${path}?${params.toString()}`
+        `https://api.nightbot.tv/1${path}?${params.toString()}`,
       )
       const options = {
         headers: {
@@ -53,7 +53,7 @@ async function handleExport(token: string, endpoints: Endpoints) {
         [],
         url,
         endpoint.resource_key,
-        options
+        options,
       )
 
       console.log(`payload: ${path} == `, resource)

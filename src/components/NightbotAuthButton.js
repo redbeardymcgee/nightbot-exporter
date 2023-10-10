@@ -26,7 +26,10 @@ const URL = `https://api.nightbot.tv/oauth2/authorize?${PARAMS.toString()}`
 
 export function NightbotAuthButton() {
   return (
-    <Button variant="contained" href={URL}>
+    <Button
+      variant="contained"
+      href={URL}
+    >
       Authorize
     </Button>
   )

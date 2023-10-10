@@ -1,11 +1,20 @@
-import React, { useState, useEffect, ChangeEvent, StrictMode } from "react"
 import { Container } from "@mui/material"
-import { NightbotExportSelector } from "./components/NightbotExportSelector"
+import React, { ChangeEvent, useEffect, useState } from "react"
 import { Endpoints } from "../types"
+import { NightbotExportSelector } from "./components/NightbotExportSelector"
 
+// prettier-ignore
 const ENDPOINTS: Endpoints = {
-  user: { checked: false, resource_key: "user", path: "/me" },
-  channel: { checked: false, resource_key: "channel", path: "/channel" },
+  user: {
+    checked: false,
+    resource_key: "user",
+    path: "/me"
+  },
+  channel: {
+    checked: false,
+    resource_key: "channel",
+    path: "/channel"
+  },
   custom_commands: {
     checked: false,
     resource_key: "commands",
@@ -16,13 +25,21 @@ const ENDPOINTS: Endpoints = {
     resource_key: "filters",
     path: "/spam_protection",
   },
-  timers: { checked: false, resource_key: "timers", path: "/timers" },
+  timers: {
+    checked: false,
+    resource_key: "timers",
+    path: "/timers"
+  },
   playlist: {
     checked: false,
     resource_key: "playlist",
     path: "/song_requests/playlist",
   },
-  regulars: { checked: false, resource_key: "regulars", path: "/regulars" },
+  regulars: {
+    checked: false,
+    resource_key: "regulars",
+    path: "/regulars"
+  },
   subscribers: {
     checked: false,
     resource_key: "subscribers",
