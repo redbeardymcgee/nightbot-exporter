@@ -1,7 +1,7 @@
 {
   "name": "nightbot-exporter",
   "version": "1.0.0",
-  "homepage": "https://redbeardymcgee.github.io/nightbot-exporter"
+  "homepage": "https://redbeardymcgee.github.io/nightbot-exporter",
   "private": true,
   "dependencies": {
     "@emotion/react": "latest",
@@ -23,11 +23,7 @@
     "deploy": "gh-pages -d build"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
