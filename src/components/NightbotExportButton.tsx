@@ -57,7 +57,7 @@ async function handleExport(token: string, endpoints: Endpoints) {
           options,
         )
 
-        return resource
+        return { [endpoint.resource_key]: resource }
       }),
   )
   const blob = new Blob([JSON.stringify(resources, null, 2)], {
