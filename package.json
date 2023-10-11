@@ -1,6 +1,7 @@
 {
   "name": "nightbot-exporter",
   "version": "1.0.0",
+  "homepage": "https://redbeardymcgee.github.io/nightbot-exporter"
   "private": true,
   "dependencies": {
     "@emotion/react": "latest",
@@ -13,19 +14,27 @@
     "react-scripts": "latest",
     "typescript": "latest"
   },
-
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.0.0"
   }
 }
