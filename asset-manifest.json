@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/nightbot-exporter/static/js/main.d476d82d.js",
+    "main.js": "/nightbot-exporter/static/js/main.390f9723.js",
     "index.html": "/nightbot-exporter/index.html",
-    "main.d476d82d.js.map": "/nightbot-exporter/static/js/main.d476d82d.js.map"
+    "main.390f9723.js.map": "/nightbot-exporter/static/js/main.390f9723.js.map"
   },
   "entrypoints": [
-    "static/js/main.d476d82d.js"
+    "static/js/main.390f9723.js"
   ]
 }
