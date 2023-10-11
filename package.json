@@ -1,6 +1,6 @@
 {
-  "name": "nightbot-exporter-mui",
-  "version": "0.0.1",
+  "name": "nightbot-exporter",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "latest",

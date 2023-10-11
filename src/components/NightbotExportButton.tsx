@@ -36,29 +36,40 @@ async function fetchResource<T>(
 }
 
 async function handleExport(token: string, endpoints: Endpoints) {
-  Object.values(endpoints)
-    .filter((endpoint) => endpoint.checked)
-    .map(async (endpoint) => {
-      const path = endpoint.path
-      const params = new URLSearchParams({ offset: "0", limit: "100" })
-      const url = new URL(
-        `https://api.nightbot.tv/1${path}?${params.toString()}`,
-      )
-      const options = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-      const resource = await fetchResource(
-        [],
-        url,
-        endpoint.resource_key,
-        options,
-      )
+  const resources = await Promise.all(
+    Object.values(endpoints)
+      .filter((endpoint) => endpoint.checked)
+      .map(async (endpoint) => {
+        const path = endpoint.path
+        const params = new URLSearchParams({ offset: "0", limit: "100" })
+        const url = new URL(
+          `https://api.nightbot.tv/1${path}?${params.toString()}`,
+        )
+        const options = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        const resource = await fetchResource(
+          [],
+          url,
+          endpoint.resource_key,
+          options,
+        )
 
-      console.log(`payload: ${path} == `, resource)
-      return resource
-    })
+        return resource
+      }),
+  )
+  const blob = new Blob([JSON.stringify(resources, null, 2)], {
+    type: "application/json",
+  })
+
+  const blobUrl = URL.createObjectURL(blob)
+  const downloader = document.createElement("a")
+  downloader.href = blobUrl
+  downloader.download = "nightbot_export.json"
+  downloader.click()
+  URL.revokeObjectURL(blobUrl)
 }
 
 export function NightbotExportButton({
