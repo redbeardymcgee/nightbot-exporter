@@ -1,5 +1,5 @@
 import React from "react"
-import Button from "@mui/material/Button"
+import { Button, Box } from "@mui/material"
 
 const SCOPE = [
   "channel",
@@ -26,11 +26,13 @@ const URL = `https://api.nightbot.tv/oauth2/authorize?${PARAMS.toString()}`
 
 export function NightbotAuthButton() {
   return (
-    <Button
-      variant="contained"
-      href={URL}
-    >
-      Authorize
-    </Button>
+    <Box>
+      <Button
+        variant="contained"
+        href={URL}
+      >
+        Authorize
+      </Button>
+    </Box>
   )
 }
