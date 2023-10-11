@@ -15,12 +15,12 @@
     "typescript": "latest"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "NODE_ENV=development react-scripts start",
+    "build": "NODE_ENV=production react-scripts build",
+    "test": "NODE_ENV=development react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "NODE_ENV=production gh-pages -d build"
   },
   "browserslist": {
     "production": [">0.2%", "not dead", "not op_mini all"],

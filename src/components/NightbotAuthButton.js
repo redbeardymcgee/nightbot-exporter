@@ -16,7 +16,7 @@ const SCOPE = [
 
 const PARAMS = new URLSearchParams({
   client_id: "db258d5003bf9cef2316ccfd22aca141",
-  redirect_uri: "https://redbeardymcgee.github.io/nightbot-exporter/",
+  redirect_uri: process.env.REACT_APP_REDIRECT_URI,
   response_type: "token",
   scope: SCOPE,
   state: "FIXME",
