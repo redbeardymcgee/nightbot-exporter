@@ -60,10 +60,10 @@ async function handleExport(token: string, endpoints: Endpoints) {
         return { [endpoint.resource_key]: resource }
       }),
   )
+
   const blob = new Blob([JSON.stringify(resources, null, 2)], {
     type: "application/json",
   })
-
   const blobUrl = URL.createObjectURL(blob)
   const downloader = document.createElement("a")
   downloader.href = blobUrl
@@ -80,7 +80,7 @@ export function NightbotExportButton({
     <Box>
       <Button
         variant="contained"
-        onClick={() => handleExport(token, endpoints)}
+        onClick={async () => await handleExport(token, endpoints)}
       >
         Export
       </Button>
